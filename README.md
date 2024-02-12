@@ -29,3 +29,13 @@ The Smart Indoor Hydroponic Farming system aims to provide an automated solution
 
 ![Screenshot 4: Control Panel](/src/Screenshot4.png)
 *Control Panel*
+
+
+## Arduino Code
+
+The Arduino code for controlling the hydroponic system can be found as `/controllerCode.h` . It include sketches for reading sensor data, controlling actuators, and implementing automated routines.
+
+## Web-Based Admin Dashboard
+
+The web-based admin dashboard for monitoring and managing the hydroponic system can be found in the `dashboard` directory. It provides a user-friendly interface for viewing real-time data, adjusting settings, and controlling the system remotely.
+
