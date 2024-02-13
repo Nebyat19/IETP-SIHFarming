@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="manifest" href="/manifest.json"> 
+	<meta name="description" content="Learn about smart indoor hydrophobic farming and its innovative approach to sustainable crop production.">
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css">
+	<link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+	<link rel="stylesheet" href="not-style.css">
+
+	<title>SIHF</title>
+
+	
+</head>
+<body>
+	
+	<style>
+		.dropdown{
+			position: absolute;
+		  top: 100%;
+		  right: 0;
+		  margin: 10px;;
+		width: 200px;
+		  padding: 10px;
+		  background-color: #fff;
+		  border: 1px solid #ccc;
+		 
+		
+		;
+		
+		}
+		.dropdown::before{
+			position:inherit;
+			content: "";
+			padding: 10px;
+			background-color: rgb(255, 255, 255);
+			top:-10px;
+			left:130px;
+			align-content: center;
+			align-self: center;
+			border-radius:0px 100px 100px 0px ;
+		}
+		.notification-list {
+			display: flex;
+			flex-direction: column;
+		}
+		.dropdown-item{
+			background-color: gery;
+		}
+		.hide{
+			display: none !important;
+		}
+	  </style> 
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="/" class="brand">
+			<i class='bx '><img src="img/logo.png" alt="logo"> </i>
+			<span class="text">SIHF</span>
+		</a>
+		<span class="brand-text">Smart Hydroponic Farming</span>
+		<ul class="side-menu top">
+			<li >
+				<a href="./index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="./control.html">
+				
+					<i class='bx bi bi-sliders' ></i>
+					<span class="text">Control</span>
+				</a>
+			</li>
+			<li>
+				<a href="./status.html">
+				
+					<i class='bx bi bi-card-checklist' ></i>
+					<span class="text">Status</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="./notify.html">
+					
+					<i class='bx bi bi-bell' ></i>
+					<span class="text">Notification</span>
+				</a>
+			</li>
+			  <li>
+				<a href="./ai.html">
+					
+					<i class='bx bi bi-lightbulb' ></i>
+					<span class="text">Ai Feed</span>
+				</a>
+			</li>
+		
+		</ul>
+		 <ul class="side-menu">
+        <li>
+          <a href="./config.html">
+            <i class="bx bi bi-gear"></i>
+
+            <span class="text">Config</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="logout">
+            <i class="bx bi bi-box-arrow-left"></i>
+
+            <span class="text">Logout</span>
+          </a>
+        </li>
+      </ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification" onclick="hideNotfication()">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			
+			<a href="./config.html" class="profile">
+			<i class='bx bxs-cog' ></i>
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+		<img src="img/banner2.jpg" class="img-fluid img-thumbnail" alt="Responsive image">
+			<div class="head-title">
+				<div class="left">
+					<h1>Notification</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Notification</a>
+						</li>
+					</ul>
+				</div>
+			
+			</div>
+			<section class="section-50">
+				<div class="container">
+					<h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell text-muted"></i></h3>
+			
+					<!-- <div class="notification-ui_dd-content"> -->
+						<div   id="notify">
+							
+							
+						</div>
+					
+						
+						
+<!-- 						
+					</div> -->
+			
+					
+			
+				</div>
+			</section>
+			
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	<script src="js/script.js"></script>
+	<script src="app.js"></script>
+	<script>
+		function hideNotfication(){
+			
+			const notification =document.querySelector("#notify");
+			notification.classList.add="hide";
+			
+		}
+	</script>
+	<script>
+		var oldNotification = JSON.parse(localStorage.getItem("notification"));
+		var xold = oldNotification.oldmsg;
+		/**
+		 * @type {string[]} message
+		*/
+		var message = xold.split("/");
+			var notify = document.getElementById("notify");
+			
+			message = message.slice(0, 14)
+			var oldelement=" ";
+		
+		message
+		.forEach(element => {
+			var time = Math.floor(Math.random() * 10) + 1;
+		if(oldelement!=element){
+			notify.innerHTML += `
+			
+                <div class="notification-list notification-list--unread">
+                    <div class="notification-list_content">
+                        <div class="notification-list_img">
+									<img src="./img/farmm.png" alt="icon">
+							</div>
+                        <div class="notification-list_detail">
+                            <p><b>System Alert</b> Now</p>
+                        <p class="text-muted">${element}</p>
+                        <p class="text-muted"><small>${time} mins ago
+                            </small></p>
+                    </div>
+                    <div class="notification-list_feature-img">
+                        <img src="./img/leaf.png" alt="Feature image">
+                    </div>
+                </div>
+
+            
+
+				`;
+				oldelement=element;		
+			}		
+
+		});
+
+	
+		
+	</script>
+</body>
+</html>

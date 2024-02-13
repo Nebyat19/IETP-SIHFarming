@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="manifest" href="/manifest.json" />
+	<meta name="description"
+		content="Learn about smart indoor hydrophobic farming and its innovative approach to sustainable crop production." />
+	<!-- Boxicons -->
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css" />
+	<link rel="shortcut icon" href="img/logo.png" type="image/x-icon" />
+	<!-- Firebase App (the core Firebase SDK) -->
+	<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+	<!-- Firebase Firestore (if you want to use Firestore) -->
+	<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js"></script>
+
+
+	<title>SIHF</title>
+</head>
+
+<body>
+	
+	<style>
+		.dropdown {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			margin: 10px;
+			width: 200px;
+			padding: 10px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+		}
+
+		.dropdown::before {
+			position: inherit;
+			content: "";
+			padding: 10px;
+			background-color: rgb(255, 255, 255);
+			top: -10px;
+			left: 130px;
+			align-content: center;
+			align-self: center;
+			border-radius: 0px 100px 100px 0px;
+		}
+
+		.notification-list {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.dropdown-item {
+			background-color: gery;
+		}
+
+		.hide {
+			display: none !important;
+		}
+	</style>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="/" class="brand">
+			<i class="bx"><img src="img/logo.png" alt="logo" /> </i>
+			<span class="text">SIHF</span>
+		</a>
+		<span class="brand-text">Smart Hydroponic Farming</span>
+		<ul class="side-menu top">
+			<li>
+				<a href="./index.html">
+					<i class="bx bxs-dashboard"></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="./control.html">
+					<i class="bx bi bi-sliders"></i>
+					<span class="text">Control</span>
+				</a>
+			</li>
+
+			<li>
+				<a href="./status.html">
+					<i class="bx bi bi-card-checklist"></i>
+					<span class="text">Status</span>
+				</a>
+			</li>
+			<li>
+				<a href="./notify.html">
+					<i class="bx bi bi-bell"></i>
+					<span class="text">Notification</span>
+				</a>
+			</li>
+			<li>
+				<a href="./ai.html">
+					<i class="bx bi bi-lightbulb"></i>
+					<span class="text">Ai Feed</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li class="active">
+				<a href="./config.html">
+					<i class="bx bi bi-gear"></i>
+
+					<span class="text">Config</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" class="logout">
+					<i class="bx bi bi-box-arrow-left"></i>
+
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class="bx bx-menu"></i>
+
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search..." />
+					<button type="submit" class="search-btn">
+						<i class="bx bx-search"></i>
+					</button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden />
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notify.html" class="notification" onclick="hideNotfication()">
+				<i class="bx bxs-bell"></i>
+				<span class="num">8</span>
+			</a>
+
+			<a href="#" class="profile">
+				<i class="bx bxs-cog"></i>
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<img src="img/hero.jpg" class="img-fluid img-thumbnail" alt="Responsive image" />
+			<div class="head-title">
+				<div class="left">
+					<h1>Config</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">configuration</a>
+						</li>
+						<li><i class="bx bx-chevron-right"></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<ul class="box-info">
+				<li>
+					<i class='bx bi bi-fan'></i>
+					<span class="text fan-status">
+						<h3><b>Fan Control</b></h3>
+						<p></p>
+						<form id="fanForm">
+							<h3>Start delay</h3> <input type="number" id="fanStartDelay" min="1" value="30"><br>
+							<h3>Duration</h3>
+							</h3><input type="number" id="fanDuration" min="1" value="2"><br>
+							<input type="submit" value="Set Schedule " class="green-button">
+						</form>
+					</span>
+				</li>
+				<li>
+					<i class='bx bi bi-gear-fill'></i>
+					<span class="text pump-status">
+						<h3><b>Pump Control</b></h3>
+						<p></p>
+						<form id="pumpForm">
+							<h3>Start delay </h3> <input type="number" id="pumpStartDelay" min="1" value="30"><br>
+							<h3>Duration </h3> <input type="number" id="pumpDuration" min="1" value="2"><br>
+							<input type="submit" value="Set Schedule " class="green-button">
+						</form>
+					</span>
+
+				</li>
+				<li>
+					<i class='bx bi bi-lightbulb-fill'></i>
+					<span class="text led-status">
+						<h3>Led Control</h3>
+						<p></p>
+
+						<form id="ledForm">
+							<h3>Start delay</h3><input type="number" id="ledStartDelay" min="1" value="30"><br>
+							<h3>Duration </h3><input type="number" id="ledDuration" min="1" value="2"><br>
+							<input type="submit" value="Set Schedule " class="green-button">
+						</form>
+
+					</span>
+				</li>
+			
+			<!-- Your HTML structure remains the same -->
+			<li>
+				<i class='bx bi bi-cloud-drizzle-fill' style="background-color: orange"></i>
+					<span class="text led-status">
+						<h3>Humidity</h3>
+						<div id="humidityMessage" class="message"></div>
+
+			<form id="humidityForm">
+				<h3 for="minHumid">Minimum </h3>
+				<input type="number" id="minHumid" name="minHumid" placeholder="Enter minimum humidity" required>
+		
+				<h3 for="maxHumid">Maximum </h3>
+				<input type="number" id="maxHumid" name="maxHumid" placeholder="Enter maximum humidity" required>
+		
+				<button type="button" class="green-button" onclick="setHumidity()">Set Humidity</button>
+		
+				
+			</form>
+					</span>
+		</li>
+		<li>
+			<i class='bx bi bi-thermometer-sun' style="background-color: greenyellow;"></i>
+					<span class="text led-status">
+						<h3>Temperature</h3>
+						<div id="humidityMessage" class="message"></div>
+			<form id="temperatureForm">
+				<h3 for="minTemp">Minimum </h3>
+				<input type="number" id="minTemp" name="minTemp" placeholder="Enter minimum temperature" required>
+		
+				<h3 for="maxTemp">Maximum</h3>
+				<input type="number" id="maxTemp" name="maxTemp" placeholder="Enter maximum temperature" required>
+		
+				<button type="button"  class="green-button" onclick="setTemperature()">Set Temperature</button>
+		
+				<div id="temperatureMessage" class="message"></div>
+			</form>
+		</span>
+	</li>
+	</ul>
+			<script>
+				function setHumidity() {
+					var minHumid = document.getElementById("minHumid").value;
+					var maxHumid = document.getElementById("maxHumid").value;
+					sendRequest('/setHumidMinmax?minHumid=' + minHumid + '&maxHumid=' + maxHumid, 'humidityMessage');
+				}
+		
+				function setTemperature() {
+					var minTemp = document.getElementById("minTemp").value;
+					var maxTemp = document.getElementById("maxTemp").value;
+					sendRequest('/setTempMinmax?minTemp=' + minTemp + '&maxTemp=' + maxTemp, 'temperatureMessage');
+				}
+		
+				function sendRequest(endpoint, messageElementId) {
+					// Replace 'your_ip_address' with the actual IP address
+					var data = JSON.parse(localStorage.getItem("settings"));
+
+// Use the location as the query
+var api = data.port;
+
+					var url = `http://${api}${endpoint}`;
+					var messageElement = document.getElementById(messageElementId);
+		
+					// You can use any method to send the request, e.g., fetch or XMLHttpRequest
+					// Here, I'm using the fetch API for simplicity
+					fetch(url, {
+						method: 'GET',
+					})
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+						return response.text();
+					})
+					.then(data => {
+						// Handle the response data as needed
+						messageElement.innerHTML = '' + data;
+						messageElement.className = 'message success';
+					})
+					.catch(error => {
+						console.error('There was a problem:', error);
+						messageElement.innerHTML = 'Request failed: ' + error.message;
+						messageElement.className = 'message error';
+					})
+					.finally(() => {
+						messageElement.style.display = 'block';
+					});
+				}
+			</script>
+			<script>
+				// Mocking the API endpoint
+				// Retrieve the data from local storage
+				var data = JSON.parse(localStorage.getItem("settings"));
+
+				// Use the location as the query
+				var api = data.port;
+
+
+				// Function to handle form submissions
+				// Fan Form Handling and Request
+				document.getElementById("fanForm").addEventListener('submit', function (event) {
+					event.preventDefault();
+
+					var startDelay = document.getElementById("fanStartDelay").value;
+					var duration = document.getElementById("fanDuration").value;
+
+					var url = `http://${api}/fan/setSchedule?startDelay=${startDelay}&duration=${duration}`;
+
+					fetch(url)
+						.then(response => response.text())
+						.then(data => {
+							document.querySelector(".fan-status p").innerText = data;
+							console.log(`Response for Fan: ${data}`);
+						})
+						.catch(error => {
+							console.error(`Error for Fan: ${error}`);
+						});
+				});
+
+
+				// Pump Form Handling and Request
+				document.getElementById("pumpForm").addEventListener('submit', function (event) {
+					event.preventDefault();
+
+					var startDelay = document.getElementById("pumpStartDelay").value;
+					var duration = document.getElementById("pumpDuration").value;
+
+					var url = `http://${api}/pump/setSchedule?startDelay=${startDelay}&duration=${duration}`;
+
+					fetch(url)
+						.then(response => response.text())
+						.then(data => {
+							document.querySelector(".pump-status p").innerText = data;
+							console.log(`Response for Pump: ${data}`);
+						})
+						.catch(error => {
+							console.error(`Error for Pump: ${error}`);
+						});
+				});
+
+				// LED Form Handling and Request
+				document.getElementById("ledForm").addEventListener('submit', function (event) {
+					event.preventDefault();
+
+					var startDelay = document.getElementById("ledStartDelay").value  ;
+					var duration = document.getElementById("ledDuration").value;
+
+					var url = `http://${api}/led/setSchedule?startDelay=${startDelay}&duration=${duration}`;
+
+					fetch(url)
+						.then(response => response.text())
+						.then(data => {
+							document.querySelector(".led-status p").innerText = data;
+							console.log(`Response for LED: ${data}`);
+						})
+						.catch(error => {
+							console.error(`Error for LED: ${error}`);
+						});
+				});
+
+			</script>
+			<script>
+				// Mocking the API endpoint
+				// Retrieve the data from local storage
+				var file = JSON.parse(localStorage.getItem("settings"));
+
+				var route = file.port;
+
+				var oldmsg = '';
+				var socekt = new WebSocket(`ws://${route}:81`);
+				socekt.onmessage = function (event) {
+					// var notification = document.getElementById('status');
+
+					if (oldmsg != event.data) {
+						// notification.innerHTML += "<p>" + event.data + "</p>";
+
+						var oldNotification = JSON.parse(localStorage.getItem("notification"));
+						var xold = oldNotification.oldmsg;
+						oldmsg = event.data;
+						var notification = {
+							oldmsg: event.data + "/" + xold,
+
+						};
+						console.log("notification", notification);
+						localStorage.setItem("notification", JSON.stringify(notification));
+					}
+
+				}
+
+
+
+			</script>
+
+
+			<ul class="box-info">
+				<!-- Existing list items... -->
+
+				<!-- New list item -->
+				<li>
+					<i class='bx bxs-cog'></i>
+					<span class="text settings">
+						<form id="settingsForm">
+							<h3>Port Number</h3>
+							<input type="text" id="port" required><br>
+							<h3>Plant Name</h3>
+							<input type="text" id="plant" required><br>
+							<h3>Location</h3>
+							<input type="text" id="location" required><br>
+							<input type="submit" value="Set Settings" class="green-button">
+						</form>
+					</span>
+				</li>
+			</ul>
+			<div class="Suggestion">
+				<img src="img/banner3.jpg" class="img-fluid img-thumbnail" alt="ai image" />
+				<div class="head-title">
+					<div class="left">
+						<a href="./ai.html">
+							<h1>AI Suggestion</h1>
+						</a>
+						<ul class="breadcrumb">
+							<li>
+								<a href="./ai.html">See AI Suggestions for Your Farming</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+
+	<script src="js/script.js"></script>
+	<script src="app.js"></script>
+	<script src="configuration.js"></script>
+	<script>
+		function hideNotfication() {
+			const notification = document.querySelector("#notify");
+			notification.classList.add = "hide";
+		}
+	</script>
+</body>
+
+</html>

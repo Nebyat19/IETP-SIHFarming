@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="description"
+    content="Learn about smart indoor hydrophobic farming and its innovative approach to sustainable crop production." />
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- My CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="img/logo.png" type="image/x-icon" />
+
+  <title>SIHF</title>
+</head>
+
+<body>
+  <style>
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin: 10px;
+      width: 200px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .dropdown::before {
+      position: inherit;
+      content: "";
+      padding: 10px;
+      background-color: rgb(255, 255, 255);
+      top: -10px;
+      left: 130px;
+      align-content: center;
+      align-self: center;
+      border-radius: 0px 100px 100px 0px;
+    }
+
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dropdown-item {
+      background-color: gery;
+    }
+
+    .hide {
+      display: none !important;
+    }
+  </style>
+
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="/" class="brand">
+      <i class="bx"><img src="img/logo.png" alt="logo" /> </i>
+      <span class="text">SIHF</span>
+    </a>
+    <span class="brand-text">Smart Hydroponic Farming</span>
+    <ul class="side-menu top">
+      <li class="active">
+        <a href="./index.html">
+          <i class="bx bxs-dashboard"></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="./control.html">
+          <i class="bx bi bi-sliders"></i>
+          <span class="text">Control</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="./status.html">
+          <i class="bx bi bi-card-checklist"></i>
+          <span class="text">Status</span>
+        </a>
+      </li>
+      <li>
+        <a href="./notify.html">
+          <i class="bx bi bi-bell"></i>
+          <span class="text">Notification</span>
+        </a>
+      </li>
+      <li>
+        <a href="./ai.html">
+          <i class="bx bi bi-lightbulb"></i>
+          <span class="text">Ai Feed</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="side-menu">
+      <li>
+        <a href="./config.html">
+          <i class="bx bi bi-gear"></i>
+
+          <span class="text">Config</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="logout">
+          <i class="bx bi bi-box-arrow-left"></i>
+
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+
+  <!-- CONTENT -->
+  <section id="content">
+    <!-- NAVBAR -->
+    <nav>
+      <i class="bx bx-menu"></i>
+
+      <form action="#">
+        <div class="form-input">
+          <input type="search" placeholder="Search..." />
+          <button type="submit" class="search-btn">
+            <i class="bx bx-search"></i>
+          </button>
+        </div>
+      </form>
+      <input type="checkbox" id="switch-mode" hidden />
+      <label for="switch-mode" class="switch-mode"></label>
+      <a href="notify.html" class="notification" onclick="hideNotfication()">
+        <i class="bx bxs-bell"></i>
+        <span class="num">8</span>
+      </a>
+
+      <a href="./config.html" class="profile">
+        <i class="bx bxs-cog"></i>
+      </a>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+      <img src="img/hero.jpg" class="img-fluid img-thumbnail" alt="Responsive image" />
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>
+              <a href="#">Dashboard</a>
+            </li>
+            <li><i class="bx bx-chevron-right"></i></li>
+            <li>
+              <a class="active" href="#">Home</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ul class="box-info">
+        <!-- Temperature and Humidity -->
+        <li>
+          <i class="bx bi bi-thermometer-sun"></i>
+          <span class="text temperature">
+            <h3>Temperature</h3>
+            <p id="tempValue">Not Measured</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bi bi-cloud-drizzle-fill"></i>
+          <span class="text humidity">
+            <h3>Humidity</h3>
+            <p id="humidValue">Not Measured</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bi bi-droplet-fill"></i>
+          <span class="text water-level">
+            <h3>Water Level</h3>
+            <p id="waterLevel">Not Measured</p>
+          </span>
+        </li>
+      </ul>
+      <script>
+        // Mocking the API endpoint
+        var data = JSON.parse(localStorage.getItem('settings'));
+        var api = data.port;
+
+        // Function to fetch Temperature and Humidity
+        fetch(`http://${api}/tempHumid`)
+          .then(response => response.text())
+          .then(data => {
+            const [temp, humid] = data.split('/');
+            document.getElementById('tempValue').innerText = temp;
+            document.getElementById('humidValue').innerText = humid;
+            console.log(`Temperature: ${temp}, Humidity: ${humid}`);
+          });
+
+        // Function to fetch Water Level
+        fetch(`http://${api}/waterLevel`)
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('waterLevel').innerText = data;
+            console.log(`Water Level: ${data}`);
+          });
+
+        // Function to fetch Pump Status
+        fetch(`http://${api}/pump/getStatus`)
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('pumpStatus').innerText = data;
+            console.log(`Pump Status: ${data}`);
+          });
+      </script>
+      <div class="table-data">
+        <div class="todo">
+          <div class="head">
+            <h3>Weather Statistics</h3>
+
+          </div>
+          <ul class="todo-list">
+
+            <i class="fa fa-bell text-muted"></i>
+            </h3>
+            <div class="weather-container">
+              <div class="grid-container">
+                <!-- Left Column -->
+                <div class="left-column" id="leftColumn">
+                  <!-- Weather info will be populated here -->
+                </div>
+                <!-- Right Column -->
+                <div class="right-column" id="rightColumn">
+                  <!-- Weather info will be populated here -->
+                </div>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div class="table-data">
+        <div class="todo">
+          <div class="head">
+            <h3>Plant Information</h3>
+
+          </div>
+          <ul class="todo-list">
+
+            <i class="fa fa-bell text-muted"></i>
+            </h3>
+
+
+            <div class="grid-container">
+              <div id="result"></div>
+
+            </div>
+
+          </ul>
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+          var data = JSON.parse(localStorage.getItem('settings'));
+
+          // Use the location as the query
+          var plantName = data.plant;
+
+          fetch(`https://openfarm.cc/api/v1/crops/${plantName}`)
+            .then(response => response.json())
+            .then(data => {
+              const resultContainer = document.getElementById('result');
+              resultContainer.innerHTML = '';
+
+              if (data.data) {
+                const plantInfo = data.data.attributes;
+                resultContainer.innerHTML = `
+                            <h2>${plantInfo.name} <i class="bi bi-flower"></i></h2>
+                            <p><strong><i class="bi bi-info-circle"></i>Binomial Name:</strong> ${plantInfo.binomial_name} </p>
+                            <p><strong> <i class="bi bi-file-earmark-text"></i>Description:</strong> ${plantInfo.description}</p>
+                            <p><strong><i class="bi bi-arrow-up"></i>Height:</strong> ${plantInfo.height} </p>
+                            <p><strong> <i class="bi bi-tools"></i>Sowing Method:</strong> ${plantInfo.sowing_method}</p>
+                            <p><strong> <i class="bi bi-sun"></i>Sun Requirements:</strong> ${plantInfo.sun_requirements} </p>
+                            <p><img src="${plantInfo.main_image_path}" alt="${plantInfo.name}"></p>
+                                    `;
+              } else {
+                resultContainer.innerHTML = '<p>No information found for this Plant.</p>';
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching plant information:', error);
+            });
+        });
+      </script>
+
+      <div class="Suggestion">
+        <img src="img/banner3.jpg" class="img-fluid img-thumbnail" alt="ai image" />
+        <div class="head-title">
+          <div class="left">
+            <a href="./ai.html">
+              <h1>AI Suggestion</h1>
+            </a>
+            <ul class="breadcrumb">
+              <li>
+                <a href="./ai.html">See AI Suggestions for Your Farming</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- MAIN -->
+  </section>
+  <!-- CONTENT -->
+
+  <script src="js/script.js"></script>
+  <script src="app.js"></script>
+  <script src="configuration.js"></script>
+  <script>
+    function hideNotfication() {
+      const notification = document.querySelector("#notify");
+      notification.classList.add = "hide";
+    }
+  </script>
+</body>
+
+</html>
